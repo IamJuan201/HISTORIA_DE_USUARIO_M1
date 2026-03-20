@@ -30,7 +30,7 @@ Además incluye validaciones de datos usando try y except para evitar errores cu
 ```
 3. Ejecuta el programa con el siguiente comando:
 ```
-   Codigo_semana_2.py
+   inventario.py
 ```
 
 ## Usos
