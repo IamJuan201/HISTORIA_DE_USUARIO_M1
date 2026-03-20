@@ -1,15 +1,4 @@
-# TASK 5
-# 5. Documentación y limpieza del código:
 # Comenta el código explicando la funcionalidad de cada sección (menú, bucle, validación, estadísticas).
-# Estructura el código en funciones simples:
-
-# agregar_producto()
-# mostrar_inventario()
-# calcular_estadisticas()
-# Deja un comentario final resumiendo el objetivo de la semana.
- 
-# Criterios de aceptación
-# El menú debe manejar opciones inválidas sin cerrar el programa.
 
 # Variables globales
 n = 60
