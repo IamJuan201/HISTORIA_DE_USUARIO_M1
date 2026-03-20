@@ -3,13 +3,6 @@
 n = 60 # Variable para multiplicar equitativamente el numero de caracteres en los print,
         # para mejorar la estetica del programa
 
-productos_registrados = 0 # Variable para contar la cantidad de productos distintos registrados
-
-total = 0 # Variable para summar todos los subtotales y mostrar el valor total del inventario
-
-inventario = [] # Lista vacia que se llenara con los productos registrados, 
-                # cada producto se guardara como un diccionario con sus respectivas caracteristicas
-
 # Menu de opciones para el usuario, muestra las opciones disponibles al usuario y segun la opcion elegida,
 # se llama a la funcion correspondiente para realizar la accion deseada
 def menu_opciones():

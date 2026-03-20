@@ -3,9 +3,6 @@ import funciones_libreria
 
 # Variables globales, Se definen fuera de las funciones para que sean accesibles en todo el programa
 
-n = 60 # Variable para multiplicar equitativamente el numero de caracteres en los print,
-        # para mejorar la estetica del programa
-
 productos_registrados = 0 # Variable para contar la cantidad de productos distintos registrados
 
 total = 0 # Variable para summar todos los subtotales y mostrar el valor total del inventario
