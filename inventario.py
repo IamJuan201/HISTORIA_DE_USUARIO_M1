@@ -18,14 +18,14 @@ inventario = [] # Lista vacia que se llenara con los productos registrados,
 opcion = funciones_libreria.menu_opciones()
 while opcion != 4:
     if opcion == 1:
-        inventario, total, productos_registrados = funciones_libreria.agregar_productos(inventario, total, productos_registrados)
+        inventario, total, productos_registrados = funciones_libreria.agregar_productos(inventario, productos_registrados, total)
     
     elif opcion == 2:
-        funciones_libreria.mostrar_inventario()
+        funciones_libreria.mostrar_inventario(inventario)
 
     elif opcion == 3:
-        funciones_libreria.calcular_estadisticas()
-         
+        funciones_libreria.calcular_estadisticas(inventario, total, productos_registrados)
+
     else:
         # Manejo de las opciones fuera del rango válido
         print(f"\nERROR! La opcion {opcion} no existe. Intente de nuevo...\n")

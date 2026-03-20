@@ -8,8 +8,7 @@ productos_registrados = 0 # Variable para contar la cantidad de productos distin
 total = 0 # Variable para summar todos los subtotales y mostrar el valor total del inventario
 
 inventario = [] # Lista vacia que se llenara con los productos registrados, 
-                # cada producto se guardara como un diccionario con sus respectivas caracteristicas 
-                # (nombre, precio unitario, unidades, subtotal y total)
+                # cada producto se guardara como un diccionario con sus respectivas caracteristicas
 
 # Menu de opciones para el usuario, muestra las opciones disponibles al usuario y segun la opcion elegida,
 # se llama a la funcion correspondiente para realizar la accion deseada
@@ -18,7 +17,7 @@ def menu_opciones():
     print("REGISTRO DE VENTAS".center(n))
     print("="*n)
     print('\n1. Agregar productos')
-    print('2. Mostrar productos')
+    print('2. Mostrar inventario')
     print('3. Calcular estadisticas')
     print('4. Salir\n\n')
     print("="*n)
@@ -35,22 +34,21 @@ def agregar_productos(inventario, total, productos_registrados):
         print("="*n)
         nombre_producto = input("Nombre del producto: ")
 
-        # Se usa try para que el precio sea un número decimal y las unidades un número entero, 
+        # Se usa try para que el precio sea un número decimal y las cantidades un número entero, 
         # Si el usuario ingresa texto u otro valor inválido se le muestra un error y se reinicia 
         # con continue sin agregar datos incorrectos al inventario
         try:
             precio_producto = float(input("Precio del producto: "))
-            Unidades_producto = int(input("Unidades del producto: "))
+            Cantidad_producto = int(input("Cantidad del producto: "))
             
-            subtotal = precio_producto * Unidades_producto
+            subtotal = precio_producto * Cantidad_producto
             total += subtotal
             productos_registrados += 1
 
             # Cada producto se representa como un diccionario con sus características
             producto = {"Nombre": nombre_producto, 
                         "Precio unitario" : precio_producto, 
-                        "Unidades" : Unidades_producto, 
-                        "Subtotal" : subtotal, 
+                        "Cantidad" : Cantidad_producto, 
                         "Total": total
                         }
             
@@ -62,7 +60,7 @@ def agregar_productos(inventario, total, productos_registrados):
             elecion = input("¿Quiere seguir agregando productos?(Si/No): ").lower()
 
         except ValueError:
-            print("ERROR! El precio y las unidades deben ser numeros.")
+            print("ERROR! El precio y la Cantidad deben ser numeros.")
             continue
             # Si el precio o las unidades no son numéricos se muestra un mensaje de error y se reinicia
             # el bucle para que el usuario pueda ingresar los datos nuevamente
@@ -73,7 +71,7 @@ def agregar_productos(inventario, total, productos_registrados):
 
 # Recorre la lista global de productos y muestra los datos de cada producto registrado, 
 # si la lista esta vacia se muestra un mensaje que no hay productos registrados
-def mostrar_inventario():
+def mostrar_inventario(inventario):
     print("="*n)
     print("INVENTARIO".center(n))
     print("="*n)
@@ -84,32 +82,25 @@ def mostrar_inventario():
     else:
         for productos in inventario:
             print("-"*n)
-            print(f"Producto: {productos['Nombre']} | Precio Unitario: {productos['Precio unitario']} | Unidades: {productos['Unidades']}")
+            print(f"Producto: {productos['Nombre']} | Precio Unitario: {productos['Precio unitario']} | Cantidad: {productos['Cantidad']}")
 
         print("-"*n)
         input('\nPresione ENTER para volver al menu principal...')
 
 # Muestra el número de productos distintos, cantidad total de unidades, lista de nombres y valor total acumulado.
-def calcular_estadisticas():
+def calcular_estadisticas(inventario, total, productos_registrados):
     print("="*n)
     print("ESTADISTICAS".center(n))
     print("="*n)
-         
+
     if not inventario:
         print("La lista esta vacia, no se pueden ver las estadisticas.")
 
     else:
         print(f"Productos distintos registrados: {productos_registrados}")
-
-        cantidad_total_productos = 0
-        for productos in inventario:
-            cantidad_total_productos += productos['Unidades']
-
-        print("-"*n)
-        print(f"Cantidad total de productos: {cantidad_total_productos}")
+        
         print("-"*n)
         print("Productos:")
-
         for productos in inventario:
             print(f"-{productos['Nombre']}")
         print("-"*n)
