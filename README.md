@@ -1,18 +1,22 @@
 # HISTORIA_DE_USUARIO_M1
 ## Descripcion
 
-Este proyecto es un programa sencillo en Python que permite registrar el nombre de un usuario, el precio de un producto y la cantidad comprada. 
-El programa calcula automáticamente el costo total del producto multiplicando el precio por la cantidad.
-
-Además, incluye validación de datos usando try y except para evitar errores cuando el usuario ingrese valores no numéricos.
+Este proyecto es un programa en Python que permite gestionar un inventario de ventas desde la consola. El usuario puede registrar el nombre del producto, 
+precio unitario y cantidad, tambien puede visualizar el inventario y consultar estadísticas generales como el valor total acumulado y la cantidad de unidades registradas.
+ 
+Además incluye validaciones de datos usando try y except para evitar errores cuando el usuario ingrese valores no numéricos.
 
 ## Funcionalidades
+- Mostrar un menú con 4 opciones.
 - Solicitar el nombre el usuario.
 - Solicitar el precio del producto.
-- Solicitar la cantidad del producto.
+- Solicitar la unidades del producto.
+- Validar que el precio y las unidades sean valores numéricos.
+- Registrar uno o varios productos consecutivamente.
 - Validar que el precio y la cantidad del producto sean datos numericos.
-- Calcular el costo total segun las dos variables obtenidas.
-- Mostrar los datos ingresados y el total en pantalla.
+- Calcular el subtotal por producto y el total acumulado del inventario.
+- Mostrar el inventario con el nombre, precio unitario y unidades de cada producto.
+- Mostrar los productos distintos registrados, cantidad total de unidades, lista de nombres y valor total del inventario.
 
 ## Tecnologias utilizadas
 - Python 3
@@ -30,7 +34,7 @@ Además, incluye validación de datos usando try y except para evitar errores cu
 ```
 
 ## Usos
-- Registrar ventas ingresando nombre del cliente, precio y cantidad.
+- Registrar ventas ingresando nombre del producto, precio y cantidad.
 - Calcular automáticamente el costo total de una compra.
 - Validar que los datos ingresados sean numéricos, evitando errores en el registro.
 
@@ -182,17 +186,40 @@ while opcion != 4:
 
 ## Representacion en consola:
 ```
-=================================================================
-                        REGISTRO DE VENTAS                       
-=================================================================
-ingrese el nombre del producto: Lapiz
------------------------------------------------------------------
-ingrese el precio del producto: 3000
------------------------------------------------------------------
-ingrese la cantidad: 7
-=================================================================
-Producto: Lapiz | Precio: 3000.0 | Cantidad: 7 | Total: 21000.0
-=================================================================
+============================================================
+                     REGISTRO DE VENTAS                     
+============================================================
+ 
+1. Agregar productos
+2. Mostrar productos
+3. Calcular estadisticas
+4. Salir
+ 
+============================================================
+Ingrese la opcion que desea realizar (1-4): 1
+============================================================
+Nombre del producto: Lapiz
+Precio del producto: 1500
+Unidades del producto: 10
+ 
+Producto Lapiz añadido con exito.
+------------------------------------------------------------
+¿Quiere seguir agregando productos?(Si/No): no
+```
+ 
+```
+============================================================
+                         ESTADISTICAS                       
+============================================================
+Productos distintos registrados: 1
+------------------------------------------------------------
+Cantidad total de productos: 10
+------------------------------------------------------------
+Productos:
+-Lapiz
+------------------------------------------------------------
+Valor total del inventario: 15000.0
+============================================================
 ```
 
 ## Autor
