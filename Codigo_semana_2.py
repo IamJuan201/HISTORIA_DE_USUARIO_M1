@@ -1,13 +1,23 @@
-# Comenta el código explicando la funcionalidad de cada sección (menú, bucle, validación, estadísticas).
+# Variables globales, Se definen fuera de las funciones para que sean accesibles en todo el programa
 
-# Variables globales
-n = 60
-inventario = []
-productos_registrados = 0
-total = 0
+n = 60 # Variable para multiplicar equitativamente el numero de caracteres en los print,
+        # para mejorar la estetica del programa
 
-# Menu de opciones para el usuario
 
+inventario = [] # Lista vacia que se llenara con los productos registrados, 
+                # cada producto se guardara como un diccionario con sus respectivas caracteristicas 
+                # (nombre, precio unitario, unidades, subtotal y total)
+
+
+productos_registrados = 0 # Variable para contar la cantidad de productos distintos registrados
+
+
+total = 0 # Variable para summar todos los subtotales y mostrar el valor total del inventario
+
+
+
+# Menu de opciones para el usuario, muestra las opciones disponibles al usuario y segun la opcion elegida,
+# se llama a la funcion correspondiente para realizar la accion deseada
 def menu_opciones():
     print("="*n)
     print("REGISTRO DE VENTAS".center(n))
@@ -18,14 +28,21 @@ def menu_opciones():
     print('4. Salir\n\n')
     print("="*n)
     opcion = int(input("Ingrese la opcion que desea realizar (1-4): "))
-    return opcion
 
+    return opcion # Retorna la opción elegida para procesarla en el bucle principal
+
+# Funcion que permite registrar uno o varios productos en el inventario
 def agregar_productos(inventario, total, productos_registrados):
+
+    # Para que el usuario pueda seguir agregando productos mientras escriba que si en la elecion
     elecion = 'si'
     while elecion == 'si':
         print("="*n)
         nombre_producto = input("Nombre del producto: ")
 
+        # Se usa try para que el precio sea un número decimal y las unidades un número entero, 
+        # Si el usuario ingresa texto u otro valor inválido se le muestra un error y se reinicia 
+        # con continue sin agregar datos incorrectos al inventario
         try:
             precio_producto = float(input("Precio del producto: "))
             Unidades_producto = int(input("Unidades del producto: "))
@@ -34,6 +51,7 @@ def agregar_productos(inventario, total, productos_registrados):
             total += subtotal
             productos_registrados += 1
 
+            # Cada producto se representa como un diccionario con sus características
             producto = {"Nombre": nombre_producto, 
                         "Precio unitario" : precio_producto, 
                         "Unidades" : Unidades_producto, 
@@ -41,7 +59,8 @@ def agregar_productos(inventario, total, productos_registrados):
                         "Total": total
                         }
             
-            inventario.append(producto)
+            inventario.append(producto) # Se añade el producto a la lista de inventario
+
             print(f"\nProducto {nombre_producto} añadido con exito.")
             print("-"*n)
 
@@ -50,9 +69,15 @@ def agregar_productos(inventario, total, productos_registrados):
         except ValueError:
             print("ERROR! El precio y las unidades deben ser numeros.")
             continue
-        
+            # Si el precio o las unidades no son numéricos se muestra un mensaje de error y se reinicia
+            # el bucle para que el usuario pueda ingresar los datos nuevamente
+    
+    # Se retornan los tres valores modificados para actualizar
+    # las variables globales desde el bucle principal
     return inventario, total, productos_registrados
 
+# Recorre la lista global de productos y muestra los datos de cada producto registrado, 
+# si la lista esta vacia se muestra un mensaje que no hay productos registrados
 def mostrar_inventario():
     print("="*n)
     print("INVENTARIO".center(n))
@@ -69,6 +94,7 @@ def mostrar_inventario():
         print("-"*n)
         input('\nPresione ENTER para volver al menu principal...')
 
+# Muestra el número de productos distintos, cantidad total de unidades, lista de nombres y valor total acumulado.
 def calcular_estadisticas():
     print("="*n)
     print("ESTADISTICAS".center(n))
@@ -98,6 +124,7 @@ def calcular_estadisticas():
         print("="*n)
         input('\nPresione ENTER para volver al menu principal...')
 
+# muestra el menú, lee la opción y ejecuta la función correspondiente hasta que el usuario elija la opción 4.
 opcion = menu_opciones()
 while opcion != 4:
     if opcion == 1:
@@ -110,7 +137,8 @@ while opcion != 4:
          calcular_estadisticas()
          
     else:
+        # Manejo de las opciones fuera del rango válido
         print(f"\nERROR! La opcion {opcion} no existe. Intente de nuevo...\n")
         input('\nPresione ENTER para volver al menu principal...')
     
-    opcion = menu_opciones()
+    opcion = menu_opciones()  # Vuelve a mostrar el menú al terminar cada acción
