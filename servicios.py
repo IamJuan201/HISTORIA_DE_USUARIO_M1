@@ -72,7 +72,7 @@ def agregar_productos(inventario):
 
         except ValueError:
             print("ERROR! El precio y la Cantidad deben ser numeros.")
-   
+
 # Recorre la lista global de productos y muestra los datos de cada producto registrado, 
 # si la lista esta vacia se muestra un mensaje que no hay productos registrados
 def mostrar_inventario(inventario):
