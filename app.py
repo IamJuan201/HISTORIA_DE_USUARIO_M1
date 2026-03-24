@@ -1,12 +1,12 @@
 # Importo las funciones que cree en mi archivo funciones_librerias.py
-from servicios import *
-from archivos import *
+from servicios import menu_opciones, agregar_productos, mostrar_inventario, buscar_producto, actualizar_producto, eliminar_producto, calcular_estadisticas
+from archivos import guardar_csv, cargar_csv
 
 # Variables globales, Se definen fuera de las funciones para que sean accesibles en todo el programa
 
 inventario = [] # Lista vacia que se llenara con los productos registrados
 
-n = 60 # Variable para definir el ancho de lineas y centrar textos
+n = 75 # Variable para definir el ancho de lineas y centrar textos
 
 # muestra el menú, lee la opción y ejecuta la función correspondiente hasta que el usuario elija la opción 4.
 opcion = menu_opciones()
@@ -56,7 +56,7 @@ while opcion != 9:
     
     else:
         # Manejo de las opciones fuera del rango válido
-        print(f"\nERROR! La opcion {opcion} no existe. Intente de nuevo...\n")
+        print("\nERROR! Esa opcion no existe. Intente de nuevo...\n")
         input('\nPresione ENTER para volver al menu principal...')
     
     opcion = menu_opciones()  # Vuelve a mostrar el menú al terminar cada acción

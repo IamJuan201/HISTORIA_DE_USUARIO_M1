@@ -16,7 +16,7 @@
 
 # Modulo con todas las funciones
 
-n = 60 # Ancho de lineas decorativas
+n = 75 # Ancho de lineas decorativas
 
 # Menu de opciones para el usuario segun la opcion elegida se llama a la funcion correspondiente para realizar la accion deseada
 def menu_opciones():

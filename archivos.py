@@ -2,6 +2,7 @@ import csv
 
 def guardar_csv(inventario, ruta):
     try:
+        lista_nueva = []
         archivo = open(ruta, "w", newline="", encoding="utf-8")
 
         writer = csv.writer(archivo)
@@ -19,9 +20,10 @@ def guardar_csv(inventario, ruta):
 
         archivo.close()
         print("Archivo guardado con éxito.")
-
+        
     except:
         print("Error al guardar el archivo.")
+        
 
 def cargar_csv(ruta):
     inventario = []
