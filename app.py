@@ -20,7 +20,7 @@ while opcion != 9:
     elif opcion == 3:
         nombre = input("Nombre del producto: ")
         producto = buscar_producto(inventario, nombre)
-        print(producto if producto else "No encontrado")
+        print(producto if producto else "Producto no encontrado")
     
     elif opcion == 4:
         nombre = input("Nombre del producto: ")

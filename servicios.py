@@ -1,16 +1,9 @@
-# 5. Cargar CSV (persistencia de entrada + validaciones):
-# En archivos.py, implementa:
-# cargar_csv(ruta) → retorna lista de productos con la misma estructura de inventario.
-# Reglas de validación:
-# El archivo debe tener encabezado válido: nombre,precio,cantidad.
-# Cada fila debe tener exactamente 3 columnas.
-# precio debe convertirse a float y cantidad a int, no negativos.
 # Si hay filas inválidas, omítelas y acumula un contador de errores para informar al final (p. ej. “3 filas inválidas omitidas”).
 # Manejar FileNotFoundError, UnicodeDecodeError, ValueError y errores genéricos con mensajes claros.
 # Al cargar, preguntar al usuario:
-# “¿Sobrescribir inventario actual? (S/N)”
-# Si S: reemplaza inventario por lo cargado.
-# Si N: fusiona por nombre:
+# “¿Sobrescribir inventario actual? (si/no)”
+# si: reemplaza inventario por lo cargado.
+# no: fusiona por nombre:
 # Si un nombre ya existe, actualiza precio/cantidad u omite (define una política y muéstrala al usuario; por defecto, actualiza cantidad sumando y si el precio difiere, actualiza al nuevo).
 # Al finalizar, refresca la salida/menú y muestra un resumen: productos cargados, filas inválidas, acción (reemplazo/fusión).
 
@@ -53,10 +46,13 @@ def agregar_productos(inventario):
         # Se usa try para que el precio sea un número decimal y las cantidades un número entero.
         try:
             precio_producto = float(input("Precio del producto: "))
+            if precio_producto < 0:
+                print("ERROR! El precio no puede ser negativo. Intente de nuevo...")
+                continue
+
             Cantidad_producto = int(input("Cantidad del producto: "))
-            
-            if precio_producto < 0 or Cantidad_producto < 0:
-                print("ERROR! El precio y la cantidad no pueden ser negativos.")
+            if Cantidad_producto < 0:
+                print("ERROR! La cantidad no puede ser negativa. Intente de nuevo...")
                 continue
                 # Si el precio o las unidades son negativos se muestra un mensaje de error y se reinicia
                 # el bucle para que el usuario pueda ingresar los datos nuevamente
