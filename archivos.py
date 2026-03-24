@@ -12,11 +12,7 @@ def guardar_csv(inventario, ruta):
 
         # Datos
         for producto in inventario:
-            writer.writerow([
-                producto["Nombre"],
-                producto["Precio unitario"],
-                producto["Cantidad"]
-            ])
+            writer.writerow([producto["Nombre"], producto["Precio unitario"], producto["Cantidad"]])
 
         archivo.close()
         print("Archivo guardado con éxito.")
