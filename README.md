@@ -1,4 +1,7 @@
 # HISTORIA_DE_USUARIO_M1
+## Repositorio en github:
+### https://github.com/IamJuan201/HISTORIA_DE_USUARIO_M1.git
+
 ## Descripcion
 
 Este proyecto es un programa de gestion de inventario desarrollado en Python que permite registrar, administrar y persistir productos mediante un archivo CSV. 
@@ -77,7 +80,7 @@ inventario = [] # Lista vacia que se llenara con los productos registrados
 
 n = 75 # Variable para definir el ancho de lineas y centrar textos
 
-# muestra el menú, lee la opción y ejecuta la función correspondiente hasta que el usuario elija la opción 4.
+# muestra el menú, lee la opción y ejecuta la función correspondiente hasta que el usuario elija la opción 9.
 opcion = menu_opciones()
 while opcion != 9:
     if opcion == 1:
@@ -87,44 +90,23 @@ while opcion != 9:
         mostrar_inventario(inventario)
 
     elif opcion == 3:
-        nombre = input("Nombre del producto: ")
-        producto = buscar_producto(inventario, nombre)
-        print(producto if producto else "Producto no encontrado")
+        buscar_producto(inventario)
     
     elif opcion == 4:
-        nombre = input("Nombre del producto: ")
-        actualizar_producto(inventario, nombre)
+        actualizar_producto(inventario)
 
     elif opcion == 5:
-        nombre = input("Nombre del producto: ")
-        eliminar_producto(inventario, nombre)
+        eliminar_producto(inventario)
 
     elif opcion == 6:
         calcular_estadisticas(inventario)
 
     elif opcion == 7:
-        ruta = input("Nombre del archivo: ")
-        guardar_csv(inventario, ruta)
+        guardar_csv(inventario)
         
     elif opcion == 8:
-        ruta = input("Nombre del archivo: ")
-        nuevos = cargar_csv(ruta)
+        inventario = cargar_csv(inventario)
 
-        if nuevos:
-            respuesta = input("Desea sobrescribir el inventario actual con los datos del archivo? (Si/No): ").lower()
-
-            if respuesta == "si":
-                inventario = nuevos
-
-            else:
-                for nuevo in nuevos:
-                    existente = buscar_producto(inventario, nuevo["Nombre"])
-
-                    if existente:
-                        existente["Cantidad"] += nuevo["Cantidad"]
-                        existente["Precio unitario"] = nuevo["Precio unitario"]
-                    else:
-                        inventario.append(nuevo)
     else:
         # Manejo de las opciones fuera del rango válido
         print("\nERROR! Esa opcion no existe. Intente de nuevo...\n")
@@ -203,7 +185,9 @@ def agregar_productos(inventario):
             print("-"*n)
 
             elecion = input("¿Quiere seguir agregando productos?(Si/No): ").lower()
-
+            # Dependiendo la eleccion se reinicia el bucle
+        
+        # Error cuando los valores que ingresan no son numeros
         except ValueError:
             print("ERROR! El precio y la Cantidad deben ser numeros.")
 
@@ -215,7 +199,7 @@ def mostrar_inventario(inventario):
     print("="*n)
 
     if not inventario:
-            print("La lista esta vacia, necesita agregar productos.")
+        print("La lista esta vacia, necesita agregar productos.")
 
     else:
         for productos in inventario:
@@ -227,45 +211,68 @@ def mostrar_inventario(inventario):
 
 # Busca un producto por su nombre en el inventario, si lo encuentra retorna el diccionario del producto,
 # si no lo encuentra retorna None
-def buscar_producto(inventario, nombre):
-    for producto in inventario:
-        if producto["Nombre"].lower() == nombre.lower().strip():
-            return producto # Retorna el producto encontrado (su diccioario)
-    return None # El producto no se encontro en el iventario
+def buscar_producto(inventario):
+    if not inventario:
+        print("No hay productos en el inventario, agruegue productos para buscar.")
+        input("\nPresione ENTER para continuar...")
 
-def actualizar_producto(inventario, nombre):
-    producto = buscar_producto(inventario, nombre)
-
-    if not producto:
-        print(f"El producto '{nombre}' no se encontró en el inventario.")
-        return
+    else:
+        nombre = input("Nombre del producto: ")
     
-    try:
-        nuevo_precio = input("Nuevo precio (ENTER para omitir): ")
-        nueva_cantidad = input("Nueva cantidad (ENTER para omitir): ")
+        for producto in inventario:
+            # Garantizar que ambos nombres sean iguales al momento de la busqueda gracias al .lower() y el .strip()
+            if producto["Nombre"].lower() == nombre.lower().strip():
+                print(f"\nEl producto {producto} ha sido encontrado.")
+                return producto
+            
+        print(f"\nEl producto {nombre} no fue encontrado.")
+        return None
 
-        if nuevo_precio:
-            producto["Precio unitario"] = float(nuevo_precio) # Actualiza el precio del producto con el nuevo valor ingresado por el usuario
-        if nueva_cantidad:
-            producto["Cantidad"] = int(nueva_cantidad) # Actualiza la cantidad del producto con el nuevo valor ingresado por el usuario
+def actualizar_producto(inventario):
+    if not inventario:
+        print("No hay productos en el inventario, agruegue productos para actualizar.")
+        input("\nPresione ENTER para continuar...")
+    else:
+        nombre = input("Nombre del producto: ")
+        # Realiza lo mismo que esta en la funcion buscar_producto solo que aqui se almacena en la variable producto
+        producto = buscar_producto(inventario, nombre)
+
+        if not producto:
+            print(f"El producto '{nombre}' no se encontró en el inventario.")
+            return
         
-        print("Producto actualizado con éxito.")
+        try:
+            nuevo_precio = input("Nuevo precio (ENTER para omitir): ")
+            nueva_cantidad = input("Nueva cantidad (ENTER para omitir): ")
 
-    except:
-        print("ERROR! El precio y la cantidad deben ser numeros.")
-        # Si el usuario ingresa un valor no numérico para el precio o la cantidad, se muestra un mensaje de error y no se actualiza el producto
-        # El programa sigue funcionando normalmente después de mostrar el mensaje de error  
+            if nuevo_precio:
+                producto["Precio unitario"] = float(nuevo_precio) # Actualiza el precio del producto con el nuevo valor ingresado por el usuario
+            if nueva_cantidad:
+                producto["Cantidad"] = int(nueva_cantidad) # Actualiza la cantidad del producto con el nuevo valor ingresado por el usuario
+            
+            print("Producto actualizado con éxito.")
 
-def eliminar_producto(inventario, nombre):
-    producto = buscar_producto(inventario, nombre)
-    
-    if not producto:
-        print(f"El producto '{nombre}' no se encontró en el inventario.")
-        return
-    
-    inventario.remove(producto)
-    print(f"Producto '{nombre}' eliminado con éxito.")
-    print("-"*n)
+        except ValueError:
+            print("ERROR! El precio y la cantidad deben ser numeros.")
+            # Si el usuario ingresa un valor no numérico para el precio o la cantidad, se muestra un mensaje de error y no se actualiza el producto
+            # El programa sigue funcionando normalmente después de mostrar el mensaje de error  
+
+def eliminar_producto(inventario):
+    if not inventario:
+        print("No hay productos en el inventario, agruegue productos para eliminar.")
+        input("\nPresione ENTER para continuar...")
+    else:
+        nombre = input("Nombre del producto: ")
+        producto = buscar_producto(inventario, nombre)
+        # Realiza lo mismo que esta en la funcion buscar_producto solo que aqui se almacena en la variable producto
+        
+        if not producto:
+            print(f"El producto '{nombre}' no se encontró en el inventario.")
+            return
+        
+        inventario.remove(producto)
+        print(f"Producto '{nombre}' eliminado con éxito.")
+        print("-"*n)
 
 # Muestra el número de productos distintos, cantidad total de unidades, lista de nombres y valor total acumulado.
 def calcular_estadisticas(inventario):
@@ -306,115 +313,158 @@ def calcular_estadisticas(inventario):
                 "Valor_total" : valor_total,
         }
 
+
 ```
 
 ### archivos.py
 
 ```python
 import csv
+from servicios import buscar_producto
 
-def guardar_csv(inventario, ruta):
+# Funcion para guardar el inventario en un archivo csv
+def guardar_csv(inventario):
+    # Si no hay nada en el inventario entonces se muestra un mensaje al usuario indicandole que no hay productos
     if not inventario:
         print("No hay productos para guardar.")
         return
     
+    # En el caso que si hay datos en el inventario entonces se le pregunta al usuario por el nombre del archivo donde se guardará
+    ruta = input("Nombre del archivo (EJ: inventario.csv): ")
     datos_viejos = []
 
+    # Para leer el archivo en modo lectura y recuperar datos previos
     try:
-        archivo = open(ruta, "r", encoding="utf-8")
-        reader = csv.reader(archivo)
-        next(reader)  # saltar encabezado
+        with open(ruta, "r", encoding="utf-8") as archivo:
+            reader = csv.reader(archivo)
+            next(reader) # Omite la linea de encabezados
 
-        for fila in reader:
-            producto = {
-                "Nombre": fila[0],
-                "Precio unitario": float(fila[1]),
-                "Cantidad": int(fila[2])
-            }
+            # Recorre cada fila del CSV y la convierte a un diccionario
+            for fila in reader:
+                datos_viejos.append = ({
+                    "Nombre": fila[0],
+                    "Precio unitario": float(fila[1]),
+                    "Cantidad": int(fila[2])
+                    })
 
-            datos_viejos.append(producto)
-        
-        archivo.close()
+    except FileNotFoundError:
+        # Si el archivo no se encuentra entonces el usuario decide si lo quiere crear o no
+        confirmar = input(f"El archivo {ruta} no existe. ¿Desea crearlo y guardar los datos? (Si/No): ").lower()
 
-    except:
-        datos_viejos = []
-    
+        # Si dice que si se prepara una lista vacia para continuar con el guardado
+        if confirmar == 'si':
+            datos_viejos = []
+
+        else:
+            # Si dice que no o escribe otra cosa entonces no se crea el archivo  
+            return
+
+    # Cuando el archivo ya tiene datos se le pregunta al usuario si desea sobrescribirlo
     if datos_viejos:
         respuesta = input("El archivo ya tiene datos. ¿Desea sobrescribirlo? (s/n): ").lower()
         if respuesta == "s":
             print("Archivo sobreescrito con éxito.")
             datos_finales = inventario
+            # Si responde que simplemente se remplazan los datos que ya estaban en el CSV por los creados
+
         else:
             print("Los datos nuevos se agregarán al archivo existente.")
             datos_finales = datos_viejos
-        
+
             for nuevo in inventario:
                 encontrado = False
 
                 for viejo in datos_viejos:
+                    # Compara si el nombre del producto nuevo ya existe en los datos viejos
                     if nuevo["Nombre"].lower() == nuevo["Nombre"].lower():
                         viejo["Cantidad"] += nuevo["Cantidad"]
                         viejo["Precio unitario"] = nuevo["Precio unitario"]
                         encontrado = True
                         break
+
+                # Si el producto no existia en el archivo entonces se agrega como uno nuevo
                 if not encontrado:
                     datos_finales.append(nuevo)
+
+    # Si el archivo no existia o estaba vacio los datos finales seran directamente el inventario actual
     else:
         datos_finales = inventario
 
+    # Para escribir los datos definitivos en el archivo (crea el archivo si no existia)
     try:
-        archivo = open(ruta, "w", newline="", encoding="utf-8")
-        writer = csv.writer(archivo)
+        with open(ruta, "w", newline="", encoding="utf-8") as archivo:
+            writer = csv.writer(archivo)
+            writer.writerow(["Nombre", "Precio unitario", "Cantidad"])
 
-        writer.writerow(["Nombre", "Precio unitario", "Cantidad"])
+            # Recorre la lista final y escribe cada producto en el archivo csv
+            for producto in datos_finales:
+                writer.writerow([producto["Nombre"], producto["Precio unitario"], producto["Cantidad"]])
 
-        for producto in datos_finales:
-            writer.writerow([producto["Nombre"], producto["Precio unitario"], producto["Cantidad"]])
-
-        archivo.close()
-        print("Archivo guardado correctamente.")
+            archivo.close()
+            print("Archivo guardado correctamente.")
 
     except:
         print("Error al guardar el archivo.")
 
-
-def cargar_csv(ruta):
-    inventario = []
+def cargar_csv(inventario):
+    # Aqui se le pregunta al usuario por el nombre del archivo CSV donde se guardaran los datos
+    ruta = input("Nombre del archivo (EJ: inventario.csv): ")
+    datos_nuevos = []
     errores = 0
 
     try:
-        archivo = open(ruta, "r", encoding="utf-8")
-        reader = csv.reader(archivo)
+        # Intenta abrir el archivo en modo lectura para extraer los datos
+        with open(ruta, "r", encoding="utf-8") as archivo:
+            reader = csv.reader(archivo)
+            next(reader) # Omite la linea de encabezado
 
-        next(reader)
+            # Recorre cada fila y la convierte a un diccionario para el inventario
+            for fila in reader:
+                try:
+                    datos_nuevos.append({
+                        "Nombre": fila[0],
+                        "Precio unitario": float(fila[1]),
+                        "Cantidad": int(fila[2])
+                    })
 
-        for fila in reader:
-            
-            if len(fila) != 3:
-                errores += 1
-                continue
-            
-            try:
-                producto = {
-                    "Nombre": fila[0],
-                    "Precio unitario": float(fila[1]),
-                    "Cantidad": int(fila[2])
-                }
-                inventario.append(producto)
+                # En caso de que los datos esten mal escritos en el archivo se cuenta como un error (Menos o mas datos de los que deberian)
+                except ValueError:
+                    errores += 1
 
-            except:
-                errores += 1
 
-        archivo.close()
-
-        print("Archivo cargado correctamente.")
-        print(f"Filas con error: {errores}")
-
+    # En caso que no se encuentre el archivo se muestra un mensaje de error y se devuelve el inventario
+    except FileNotFoundError:
+        print("ERROR! El archivo no fue encontrado")
         return inventario
 
-    except:
-        print("Error al cargar el archivo.")
-        return []
+    # Si se cargaron datos nuevos se le pregunta al usuario como integrarlos al inventario
+    if datos_nuevos:
+        respuesta = input("Desea sobrescribir el inventario actual con los datos del archivo? (Si/No): ").lower()
+
+        # Si el usuario dice que si entonces el inventario actual se reemplaza por el del archivo
+        if respuesta == "si":
+            print(f"Se leyeron {len(datos_nuevos)} productos y fueron sobrescritos con {errores} errores.")
+            return datos_nuevos
+        
+        # Si el usuario dice que no entonces se mezclan los productos del archivo con los que ya estan
+        else:
+            print("Archivos cargados exitosamente.")
+            for nuevo in datos_nuevos:
+                # Busca si el producto del archivo ya existe en el inventario actual
+                existente = buscar_producto(inventario, nuevo["Nombre"])
+
+                # Si ya existe se actualiza la cantidad y precio
+                if existente:
+                        existente["Cantidad"] += nuevo["Cantidad"]
+                        existente["Precio unitario"] = nuevo["Precio unitario"]
+                else:
+                    inventario.append(nuevo)
+                    # Se añade los datos que estan en el archivo a la lista del inventario
+            
+            return inventario
+
+    return inventario
+
 ```
 ## Representacion en consola:
 ```
