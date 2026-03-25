@@ -36,51 +36,26 @@ while opcion != 9:
     elif opcion == 7:
         ruta = input("Nombre del archivo: ")
         guardar_csv(inventario, ruta)
-
-        datos_viejos = cargar_csv
-
-        if datos_viejos:
-            input("El archivo ya existe. Desea sobrescribir los datos? (Si/No)").lower()
-
-            if respuesta == 'si':
-                guardar_csv(inventario, ruta)
-
-            else:
-                for item_memoria in inventario:
-                    encontrado = False
-                for item_archivo in datos_viejos:
-                    if item_archivo["Nombre"] == item_memoria["Nombre"]:
-                        item_archivo["Cantidad"] += item_memoria["Cantidad"]
-                        item_archivo["Precio unitario"] = item_memoria["Precio unitario"]
-                        encontrado = True
-                        break
-                if not encontrado:
-                    datos_viejos.append(item_memoria)
-            
-            guardar_csv(datos_viejos, ruta)
-            print("Datos mezclados y guardados correctamente.")
-        else:
-            guardar_csv(inventario, ruta)
-
-        nuevos = cargar_csv(ruta)
         
     elif opcion == 8:
         ruta = input("Nombre del archivo: ")
-
+        nuevos = cargar_csv(ruta)
 
         if nuevos:
             respuesta = input("Desea sobrescribir el inventario actual con los datos del archivo? (Si/No): ").lower()
+
             if respuesta == "si":
                 inventario = nuevos
+
             else:
                 for nuevo in nuevos:
                     existente = buscar_producto(inventario, nuevo["Nombre"])
+
                     if existente:
                         existente["Cantidad"] += nuevo["Cantidad"]
-                        existente["Precio"] = nuevo["Precio"]
+                        existente["Precio unitario"] = nuevo["Precio unitario"]
                     else:
                         inventario.append(nuevo)
-    
     else:
         # Manejo de las opciones fuera del rango válido
         print("\nERROR! Esa opcion no existe. Intente de nuevo...\n")
