@@ -1,29 +1,28 @@
 import csv
+from servicios import buscar_producto
 
-def guardar_csv(inventario, ruta):
+def guardar_csv(inventario):
+
     if not inventario:
         print("No hay productos para guardar.")
         return
     
+    ruta = input("Nombre del archivo (EJ: inventario.csv): ")
     datos_viejos = []
 
     try:
-        archivo = open(ruta, "r", encoding="utf-8")
-        reader = csv.reader(archivo)
-        next(reader)  # saltar encabezado
+        with open(ruta, "r", encoding="utf-8") as archivo:
+            reader = csv.reader(archivo)
+            next(reader)
 
-        for fila in reader:
-            producto = {
-                "Nombre": fila[0],
-                "Precio unitario": float(fila[1]),
-                "Cantidad": int(fila[2])
-            }
+            for fila in reader:
+                datos_viejos.append = ({
+                    "Nombre": fila[0],
+                    "Precio unitario": float(fila[1]),
+                    "Cantidad": int(fila[2])
+                    })
 
-            datos_viejos.append(producto)
-        
-        archivo.close()
-
-    except:
+    except FileNotFoundError:
         datos_viejos = []
     
     if datos_viejos:
@@ -44,61 +43,68 @@ def guardar_csv(inventario, ruta):
                         viejo["Precio unitario"] = nuevo["Precio unitario"]
                         encontrado = True
                         break
+                    
                 if not encontrado:
                     datos_finales.append(nuevo)
     else:
         datos_finales = inventario
 
     try:
-        archivo = open(ruta, "w", newline="", encoding="utf-8")
-        writer = csv.writer(archivo)
+        with open(ruta, "w", newline="", encoding="utf-8") as archivo:
+            writer = csv.writer(archivo)
+            writer.writerow(["Nombre", "Precio unitario", "Cantidad"])
 
-        writer.writerow(["Nombre", "Precio unitario", "Cantidad"])
+            for producto in datos_finales:
+                writer.writerow([producto["Nombre"], producto["Precio unitario"], producto["Cantidad"]])
 
-        for producto in datos_finales:
-            writer.writerow([producto["Nombre"], producto["Precio unitario"], producto["Cantidad"]])
-
-        archivo.close()
-        print("Archivo guardado correctamente.")
+            archivo.close()
+            print("Archivo guardado correctamente.")
 
     except:
         print("Error al guardar el archivo.")
 
-
-def cargar_csv(ruta):
-    inventario = []
+def cargar_csv(inventario):
+    ruta = input("Nombre del archivo (EJ: inventario.csv): ")
+    datos_nuevos = []
     errores = 0
 
     try:
-        archivo = open(ruta, "r", encoding="utf-8")
-        reader = csv.reader(archivo)
+        with open(ruta, "r", encoding="utf-8") as archivo:
+            reader = csv.reader(archivo)
+            next(reader)
+            for fila in reader:
+                try:
+                    datos_nuevos.append({
+                        "Nombre": fila[0],
+                        "Precio unitario": float(fila[1]),
+                        "Cantidad": int(fila[2])
+                    })
 
-        next(reader)
+                except ValueError:
+                    errores += 1
 
-        for fila in reader:
-            
-            if len(fila) != 3:
-                errores += 1
-                continue
-            
-            try:
-                producto = {
-                    "Nombre": fila[0],
-                    "Precio unitario": float(fila[1]),
-                    "Cantidad": int(fila[2])
-                }
-                inventario.append(producto)
-
-            except:
-                errores += 1
-
-        archivo.close()
-
-        print("Archivo cargado correctamente.")
-        print(f"Filas con error: {errores}")
-
+    except FileNotFoundError:
+        print("ERROR! El archivo no fue encontrado")
         return inventario
+    
+    if datos_nuevos:
+        respuesta = input("Desea sobrescribir el inventario actual con los datos del archivo? (Si/No): ").lower()
 
-    except:
-        print("Error al cargar el archivo.")
-        return []
+        if respuesta == "si":
+            print(f"Se leyeron {len(datos_nuevos)} productos y fueron sobrescritos con {errores} errores.")
+            return datos_nuevos
+
+        else:
+            print("Archivos cargados exitosamente.")
+            for nuevo in datos_nuevos:
+                existente = buscar_producto(inventario, nuevo["Nombre"])
+
+                if existente:
+                        existente["Cantidad"] += nuevo["Cantidad"]
+                        existente["Precio unitario"] = nuevo["Precio unitario"]
+                else:
+                    inventario.append(nuevo)
+            
+            return inventario
+
+    return inventario

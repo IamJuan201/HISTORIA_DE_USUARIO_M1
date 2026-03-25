@@ -1,12 +1,3 @@
-# Si hay filas inválidas, omítelas y acumula un contador de errores para informar al final (p. ej. “3 filas inválidas omitidas”).
-# Manejar FileNotFoundError, UnicodeDecodeError, ValueError y errores genéricos con mensajes claros.
-# Al cargar, preguntar al usuario:
-# “¿Sobrescribir inventario actual? (si/no)”
-# si: reemplaza inventario por lo cargado.
-# no: fusiona por nombre:
-# Si un nombre ya existe, actualiza precio/cantidad u omite (define una política y muéstrala al usuario; por defecto, actualiza cantidad sumando y si el precio difiere, actualiza al nuevo).
-# Al finalizar, refresca la salida/menú y muestra un resumen: productos cargados, filas inválidas, acción (reemplazo/fusión).
-
 # Modulo con todas las funciones
 
 n = 75 # Ancho de lineas decorativas
@@ -69,7 +60,9 @@ def agregar_productos(inventario):
             print("-"*n)
 
             elecion = input("¿Quiere seguir agregando productos?(Si/No): ").lower()
-
+            # Dependiendo la eleccion se reinicia el bucle
+        
+        # Error cuando los valores que ingresan no son numeros
         except ValueError:
             print("ERROR! El precio y la Cantidad deben ser numeros.")
 
@@ -81,7 +74,7 @@ def mostrar_inventario(inventario):
     print("="*n)
 
     if not inventario:
-            print("La lista esta vacia, necesita agregar productos.")
+        print("La lista esta vacia, necesita agregar productos.")
 
     else:
         for productos in inventario:
@@ -93,45 +86,68 @@ def mostrar_inventario(inventario):
 
 # Busca un producto por su nombre en el inventario, si lo encuentra retorna el diccionario del producto,
 # si no lo encuentra retorna None
-def buscar_producto(inventario, nombre):
-    for producto in inventario:
-        if producto["Nombre"].lower() == nombre.lower().strip():
-            return producto # Retorna el producto encontrado (su diccioario)
-    return None # El producto no se encontro en el iventario
+def buscar_producto(inventario):
+    if not inventario:
+        print("No hay productos en el inventario, agruegue productos para buscar.")
+        input("\nPresione ENTER para continuar...")
 
-def actualizar_producto(inventario, nombre):
-    producto = buscar_producto(inventario, nombre)
-
-    if not producto:
-        print(f"El producto '{nombre}' no se encontró en el inventario.")
-        return
+    else:
+        nombre = input("Nombre del producto: ")
     
-    try:
-        nuevo_precio = input("Nuevo precio (ENTER para omitir): ")
-        nueva_cantidad = input("Nueva cantidad (ENTER para omitir): ")
+        for producto in inventario:
+            # Garantizar que ambos nombres sean iguales al momento de la busqueda gracias al .lower() y el .strip()
+            if producto["Nombre"].lower() == nombre.lower().strip():
+                print(f"\nEl producto {producto} ha sido encontrado.")
+                return producto
+            
+        print(f"\nEl producto {nombre} no fue encontrado.")
+        return None
 
-        if nuevo_precio:
-            producto["Precio unitario"] = float(nuevo_precio) # Actualiza el precio del producto con el nuevo valor ingresado por el usuario
-        if nueva_cantidad:
-            producto["Cantidad"] = int(nueva_cantidad) # Actualiza la cantidad del producto con el nuevo valor ingresado por el usuario
+def actualizar_producto(inventario):
+    if not inventario:
+        print("No hay productos en el inventario, agruegue productos para actualizar.")
+        input("\nPresione ENTER para continuar...")
+    else:
+        nombre = input("Nombre del producto: ")
+        # Realiza lo mismo que esta en la funcion buscar_producto solo que aqui se almacena en la variable producto
+        producto = buscar_producto(inventario, nombre)
+
+        if not producto:
+            print(f"El producto '{nombre}' no se encontró en el inventario.")
+            return
         
-        print("Producto actualizado con éxito.")
+        try:
+            nuevo_precio = input("Nuevo precio (ENTER para omitir): ")
+            nueva_cantidad = input("Nueva cantidad (ENTER para omitir): ")
 
-    except:
-        print("ERROR! El precio y la cantidad deben ser numeros.")
-        # Si el usuario ingresa un valor no numérico para el precio o la cantidad, se muestra un mensaje de error y no se actualiza el producto
-        # El programa sigue funcionando normalmente después de mostrar el mensaje de error  
+            if nuevo_precio:
+                producto["Precio unitario"] = float(nuevo_precio) # Actualiza el precio del producto con el nuevo valor ingresado por el usuario
+            if nueva_cantidad:
+                producto["Cantidad"] = int(nueva_cantidad) # Actualiza la cantidad del producto con el nuevo valor ingresado por el usuario
+            
+            print("Producto actualizado con éxito.")
 
-def eliminar_producto(inventario, nombre):
-    producto = buscar_producto(inventario, nombre)
-    
-    if not producto:
-        print(f"El producto '{nombre}' no se encontró en el inventario.")
-        return
-    
-    inventario.remove(producto)
-    print(f"Producto '{nombre}' eliminado con éxito.")
-    print("-"*n)
+        except ValueError:
+            print("ERROR! El precio y la cantidad deben ser numeros.")
+            # Si el usuario ingresa un valor no numérico para el precio o la cantidad, se muestra un mensaje de error y no se actualiza el producto
+            # El programa sigue funcionando normalmente después de mostrar el mensaje de error  
+
+def eliminar_producto(inventario):
+    if not inventario:
+        print("No hay productos en el inventario, agruegue productos para eliminar.")
+        input("\nPresione ENTER para continuar...")
+    else:
+        nombre = input("Nombre del producto: ")
+        producto = buscar_producto(inventario, nombre)
+        # Realiza lo mismo que esta en la funcion buscar_producto solo que aqui se almacena en la variable producto
+        
+        if not producto:
+            print(f"El producto '{nombre}' no se encontró en el inventario.")
+            return
+        
+        inventario.remove(producto)
+        print(f"Producto '{nombre}' eliminado con éxito.")
+        print("-"*n)
 
 # Muestra el número de productos distintos, cantidad total de unidades, lista de nombres y valor total acumulado.
 def calcular_estadisticas(inventario):
