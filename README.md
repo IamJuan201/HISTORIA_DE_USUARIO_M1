@@ -29,9 +29,13 @@ El sistema implementa operaciones CRUD (Crear, Leer, Actualizar, Eliminar), adem
 
 ## Estructura del proyecto
 PROYECTO PYTHON 
+
 │── app.py          # Programa principal (menú y flujo) 
+
 │── servicios.py    # Lógica del inventario (CRUD y estadísticas) 
+
 │── archivos.py     # Manejo de archivos CSV 
+
 │── README.md
 
 ## Tecnologias utilizadas
