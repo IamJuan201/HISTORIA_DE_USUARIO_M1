@@ -6,6 +6,7 @@ def guardar_csv(inventario):
     # Si no hay nada en el inventario entonces se muestra un mensaje al usuario indicandole que no hay productos
     if not inventario:
         print("No hay productos para guardar.")
+        input('\nPresione ENTER para volver al menu principal...')
         return
     
     # En el caso que si hay datos en el inventario entonces se le pregunta al usuario por el nombre del archivo donde se guardará
@@ -17,8 +18,10 @@ def guardar_csv(inventario):
         datos_viejos = []
         validar_ruta = ruta.split('.')
 
-        if validar_ruta[1] != '.csv':
-            print("ERROR! Solo se puede guardar archivos CSV")
+        if len(validar_ruta) < 2 or validar_ruta[-1].lower() != 'csv': # Se valida que el archivo tenga la extension .csv y que no tenga puntos de mas en el nombre o en el inicio
+            print("ERROR! Solo se puede usar archivos CSV")
+            input('\nPresione ENTER para volver al menu principal...')
+            return inventario
         
         else:
             # Para leer el archivo en modo lectura y recuperar datos previos
@@ -29,7 +32,7 @@ def guardar_csv(inventario):
 
                     # Recorre cada fila del CSV y la convierte a un diccionario
                     for fila in reader:
-                        datos_viejos.append = ({
+                        datos_viejos.append({
                             "Nombre": fila[0],
                             "Precio unitario": float(fila[1]),
                             "Cantidad": int(fila[2])
@@ -64,7 +67,7 @@ def guardar_csv(inventario):
 
                         for viejo in datos_viejos:
                             # Compara si el nombre del producto nuevo ya existe en los datos viejos
-                            if nuevo["Nombre"].lower() == nuevo["Nombre"].lower():
+                            if nuevo["Nombre"].lower() == viejo["Nombre"].lower():
                                 viejo["Cantidad"] += nuevo["Cantidad"]
                                 viejo["Precio unitario"] = nuevo["Precio unitario"]
                                 encontrado = True
@@ -93,6 +96,7 @@ def guardar_csv(inventario):
 
             except:
                 print("Error al guardar el archivo.")
+                input('\nPresione ENTER para volver al menu principal...')
 
 def cargar_csv(inventario):
     # Aqui se le pregunta al usuario por el nombre del archivo CSV donde se guardaran los datos
@@ -101,12 +105,16 @@ def cargar_csv(inventario):
         print("ERROR! El nombre del archivo debe incluir la extension .csv")
         input('\nPresione ENTER para volver al menu principal...')
     else:
-        validar_ruta = ruta.split('.')
         datos_nuevos = []
         errores = 0
 
-        if validar_ruta[1] != '.csv':
-            print("ERROR! Solo se puede cargar archivos CSV")
+        validar_ruta = ruta.split('.')
+        validar_ruta = ruta.split('.')
+
+        if len(validar_ruta) < 2 or validar_ruta[-1].lower() != 'csv': # Se valida que el archivo tenga la extension .csv y que no tenga puntos de mas en el nombre o en el inicio
+            print("ERROR! Solo se puede usar archivos CSV")
+            input('\nPresione ENTER para volver al menu principal...')
+            return inventario
         
         else:
             try:
@@ -132,6 +140,7 @@ def cargar_csv(inventario):
             # En caso que no se encuentre el archivo se muestra un mensaje de error y se devuelve el inventario
             except FileNotFoundError:
                 print("ERROR! El archivo no fue encontrado")
+                input('\nPresione ENTER para volver al menu principal...')
                 return inventario
 
             # Si se cargaron datos nuevos se le pregunta al usuario como integrarlos al inventario
@@ -145,7 +154,7 @@ def cargar_csv(inventario):
                 
                 # Si el usuario dice que no entonces se mezclan los productos del archivo con los que ya estan
                 else:
-                    print("Archivos cargados exitosamente.")
+                    print("Datos cargados exitosamente.")
                     for nuevo in datos_nuevos:
                         # Busca si el producto del archivo ya existe en el inventario actual
                         existente = buscar_producto(inventario, nuevo["Nombre"])

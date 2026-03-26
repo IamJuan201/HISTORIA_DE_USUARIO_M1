@@ -18,13 +18,23 @@ while opcion != 9:
         mostrar_inventario(inventario)
 
     elif opcion == 3:
-        buscar_producto(inventario)
+        nombre = input("Ingrese el nombre del producto: ")
+        producto = buscar_producto(inventario, nombre)
+        if producto:
+            print("-"*n)
+            print(f"Producto: {producto['Nombre']} | Precio: {producto['Precio unitario']} | Cantidad: {producto['Cantidad']}")
+            print("-"*n)
+        else:
+            print("Producto no encontrado.")
+        input('\nPresione ENTER para continuar...')
     
     elif opcion == 4:
-        actualizar_producto(inventario)
+        nombre = input("Ingrese el nombre del producto a actualizar: ")
+        actualizar_producto(inventario, nombre)
 
     elif opcion == 5:
-        eliminar_producto(inventario)
+        nombre = input("Ingrese el nombre del producto a eliminar: ")
+        eliminar_producto(inventario, nombre)
 
     elif opcion == 6:
         calcular_estadisticas(inventario)
