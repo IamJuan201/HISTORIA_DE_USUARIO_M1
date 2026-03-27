@@ -57,7 +57,7 @@ PROYECTO PYTHON
 ```
 4. Ejecutar el programa
 ```
-   python app.py
+   python3 app.py
 ```
 
 ## Usos
